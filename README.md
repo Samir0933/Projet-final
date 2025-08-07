@@ -96,15 +96,15 @@ La répartition et l’évolution des infrastructures de recharge pour véhicule
 
  
 
-Objectif : Comprendre le niveau actuel de déploiement des véhicules électriques et des infrastructures 
+I. Comprendre le niveau actuel de déploiement des véhicules électriques et des infrastructures 
 
 
+Quelle est l’évolution du nombre de bornes de recharge par an ? (graphborne) (voiture_commune olli)
 
-Quelle est l’évolution du nombre de bornes de recharge par an ? (graphborne)
+Quelle est l’évolution du parc de véhicules électriques ? (voiture_commune olli)
 
-Quelle est l’évolution du parc de véhicules électriques ? 
 
-Quel est le ratio bornes / véhicules (vs préconisation AFI = 1 borne pour 10 VE) ? (graphborne)
+Quel est le ratio bornes / véhicules (vs préconisation AFI = 1 borne pour 10 VE) ? (graphborne) (voiture_commune olli)
 
 
 
@@ -114,9 +114,11 @@ II. ANALYSE GÉOGRAPHIQUE 
 
 Objectif : Évaluer la cohérence entre infrastructures, population et trafic routier 
 
-La répartition des bornes suit-elle la densité de population ? 
+La répartition des bornes suit-elle la densité de population ? (voiture_commune olli)
 
-Quelles zones sont sous-équipées (ratio bornes/population ou bornes/TMJA faible) ? (TMJA olli partiel)
+
+Quelles zones sont sous-équipées (ratio bornes/population ou bornes/TMJA faible) ? (TMJA olli partiel) (voiture_commune olli)
+
 
 Corrélations : 
 
@@ -152,7 +154,8 @@ IV. RECOMMANDATIONS 
 
 Objectif : Identifier les leviers d’action et zones prioritaires pour l’avenir  (graphborne)
 
-Quelles régions / communes doivent être ciblées en priorité ? 
+Quelles régions / communes doivent être ciblées en priorité ? (voiture_commune olli)
+
 
 Où renforcer le réseau selon le trafic et les prévisions d’immatriculation ? (TMJA olli partiel)
 
