@@ -116,7 +116,7 @@ Objectif : Évaluer la cohérence entre infrastructures, population et trafic 
 
 La répartition des bornes suit-elle la densité de population ? 
 
-Quelles zones sont sous-équipées (ratio bornes/population ou bornes/TMJA faible) ? 
+Quelles zones sont sous-équipées (ratio bornes/population ou bornes/TMJA faible) ? (TMJA olli partiel)
 
 Corrélations : 
 
@@ -154,7 +154,7 @@ Objectif : Identifier les leviers d’action et zones prioritaires pour l’ave
 
 Quelles régions / communes doivent être ciblées en priorité ? 
 
-Où renforcer le réseau selon le trafic et les prévisions d’immatriculation ? 
+Où renforcer le réseau selon le trafic et les prévisions d’immatriculation ? (TMJA olli partiel)
 
 Quels opérateurs pourraient être mobilisés selon leurs performances passées ? 
 
