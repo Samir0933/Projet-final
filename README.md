@@ -100,11 +100,11 @@ Objectif : Comprendre le niveau actuel de déploiement des véhicules électriq
 
 
 
-Quelle est l’évolution du nombre de bornes de recharge par an ? 
+Quelle est l’évolution du nombre de bornes de recharge par an ? (graphborne)
 
 Quelle est l’évolution du parc de véhicules électriques ? 
 
-Quel est le ratio bornes / véhicules (vs préconisation AFI = 1 borne pour 10 VE) ? 
+Quel est le ratio bornes / véhicules (vs préconisation AFI = 1 borne pour 10 VE) ? (graphborne)
 
 
 
@@ -134,11 +134,13 @@ III. ANALYSE TEMPORELLE 
 
 Objectif : Détecter les tendances, pics et retards 
 
-À quelle période observe-t-on les pics d’installation de bornes ?
+À quelle période observe-t-on les pics d’installation de bornes ? (graphborne)
 
 Y a-t-il des retards d’équipement selon les régions ? 
 
 Les évolutions suivent-elles les objectifs de la loi d’orientation des mobilités ? 
+
+Analyse des opérateurs et leur évolution (graphborne)
 
  
 
@@ -148,7 +150,7 @@ IV. RECOMMANDATIONS 
 
  
 
-Objectif : Identifier les leviers d’action et zones prioritaires pour l’avenir 
+Objectif : Identifier les leviers d’action et zones prioritaires pour l’avenir  (graphborne)
 
 Quelles régions / communes doivent être ciblées en priorité ? 
 
@@ -156,4 +158,4 @@ Où renforcer le réseau selon le trafic et les prévisions d’immatriculatio
 
 Quels opérateurs pourraient être mobilisés selon leurs performances passées ? 
 
-Scénarios : que se passe-t-il si les VE augmentent de X% par an ? 
+Scénarios : que se passe-t-il si les VE augmentent de X% par an ? (graphborne)
