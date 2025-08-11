@@ -112,30 +112,6 @@ class VEChargingAnalyzer:
         fig.update_layout(title_text="Ratio Bornes / Véhicules Électriques", height=600)
         return fig
 
-    def plot_saisonnalite_installations(self):
-        df_valid = self.df.dropna(subset=['mois', 'annee', 'trimestre'])
-        mois_order = list(range(1, 13))
-        mois_labels = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun',
-                       'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc']
-
-        installs_par_mois = df_valid.groupby('mois').size().reindex(mois_order, fill_value=0)
-
-        heatmap_data = df_valid.groupby(['annee', 'trimestre']).size().unstack(fill_value=0)
-
-        fig = make_subplots(rows=1, cols=2, subplot_titles=["Installations par mois", "Heatmap Annuelle"])
-
-        fig.add_trace(go.Bar(x=mois_labels, y=installs_par_mois.values), row=1, col=1)
-
-        fig.add_trace(go.Heatmap(
-            z=heatmap_data.values,
-            x=[f'T{col}' for col in heatmap_data.columns],
-            y=heatmap_data.index,
-            colorscale='YlOrRd'
-        ), row=1, col=2)
-
-        fig.update_layout(title="Saisonnalité des installations", height=500)
-        return fig
-
     def plot_operateurs_analysis(self):
         top_operateurs = self.df['nom_operateur'].value_counts().head(10)
 
@@ -156,48 +132,15 @@ class VEChargingAnalyzer:
         fig.update_layout(title="Analyse des opérateurs", height=500)
         return fig
 
-    def plot_scenarios_futurs(self):
-        derniere_annee = self.df['annee'].max()
-        bornes_actuelles = len(self.df)
-
-        annees_futures = list(range(derniere_annee + 1, derniere_annee + 6))
-        scenarios = {
-            'Conservateur': [680000 * (1.2 ** i) for i in range(1, 6)],
-            'Modéré': [680000 * (1.35 ** i) for i in range(1, 6)],
-            'Ambitieux': [680000 * (1.5 ** i) for i in range(1, 6)]
-        }
-
-        fig = make_subplots(rows=1, cols=2, subplot_titles=["Projection VE", "Besoins en bornes"])
-
-        for label, data in scenarios.items():
-            fig.add_trace(go.Scatter(
-                x=annees_futures, y=data, mode='lines+markers', name=f'VE - {label}'
-            ), row=1, col=1)
-
-            bornes_requises = [x / 10 for x in data]
-            fig.add_trace(go.Scatter(
-                x=annees_futures, y=bornes_requises, mode='lines+markers', name=f'Bornes - {label}'
-            ), row=1, col=2)
-
-        fig.add_hline(y=bornes_actuelles, line_dash='dash', row=1, col=2)
-
-        fig.update_layout(title="Scénarios futurs", height=500)
-        return fig
-
-    # Supprimé plot_repartition_geographique car Folium non utilisé
-
     def generer_tous_graphiques(self):
         figs = []
         figs.append(('Évolution des bornes', self.plot_evolution_bornes()))
         figs.append(('Ratio Bornes / Véhicules Électriques', self.plot_ratio_bornes_ve()))
-        figs.append(('Saisonnalité des installations', self.plot_saisonnalite_installations()))
         figs.append(('Analyse des opérateurs', self.plot_operateurs_analysis()))
-        figs.append(('Scénarios futurs', self.plot_scenarios_futurs()))
         return figs
 
 
-#graphiques ICI
-
+# --- Programme principal ---
 file_path = 'data/raw/BornesPropres.csv'
 df = pd.read_csv(file_path)
 
