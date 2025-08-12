@@ -67,9 +67,12 @@ class TrafficAnalyzer:
         self.df_traffic = df_traffic.copy()
 
     def plot_evolution_trafic(self):
-        # Calcul de la moyenne du TMJA par année
+    # Calcul de la moyenne du TMJA par année
         trafic_moyen = self.df_traffic.groupby('anneeMesureTrafic')['TMJA_actualise'].mean().reset_index()
-        
+
+    # Forcer le type entier pour éviter les décimales dans l'axe X
+        trafic_moyen['anneeMesureTrafic'] = trafic_moyen['anneeMesureTrafic'].astype(int)
+    
         fig = go.Figure()
         fig.add_trace(go.Scatter(
             x=trafic_moyen['anneeMesureTrafic'],
@@ -79,7 +82,10 @@ class TrafficAnalyzer:
             line=dict(width=3, color=SECONDARY_COLOR),
             marker=dict(size=8, color=PRIMARY_COLOR)
         ))
-        
+    
+    # Format de l'axe X : ticks tous les ans et pas de décimales
+        fig.update_xaxes(dtick=1, tickformat="d")
+    
         fig.update_layout(
             title="Évolution du trafic moyen journalier en France",
             xaxis_title="Année",
