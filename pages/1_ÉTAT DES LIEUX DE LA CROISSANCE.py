@@ -1,11 +1,35 @@
-import streamlit as st
 import pandas as pd
+import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from datetime import datetime
 import warnings
 warnings.filterwarnings('ignore')
+
+# Chargement du dataset
+file_path = 'data/raw/BornesPropres.csv'
+df = pd.read_csv(file_path)
+
+# KPI 1 : Nombre total de stations uniques
+total_stations = df['id_station_local'].nunique()
+
+# KPI 2 : Nombre total de points de charge
+total_points_charge = df['nbre_pdc'].sum()
+
+st.title("État des lieux de la croissance de la mobilité électrique")
+st.subheader("Objectif : Comprendre le déploiement des infrastructures et du parc de véhicules électriques")
+
+
+col1, col2= st.columns(2)
+
+
+
+col1.metric("Nombre total de stations", total_stations)
+col2.metric("Nombre total de points de charge", total_points_charge)
+
+st.header(" ")
+
 
 # ======================
 # Classe d'analyse
@@ -144,12 +168,8 @@ class VEChargingAnalyzer:
 # ======================
 # Interface Streamlit
 # ======================
-file_path = 'data/raw/BornesPropres.csv'
-df = pd.read_csv(file_path)
 analyzer = VEChargingAnalyzer(df)
 
-st.title("🚗⚡ État des lieux de la croissance de la mobilité électrique")
-st.subheader("Objectif : Comprendre le déploiement des infrastructures et du parc de véhicules électriques")
 
 # --- 1. Évolution des bornes ---
 st.markdown("### 1️⃣ Quelle est l’évolution du nombre de bornes de recharge par an ?")
