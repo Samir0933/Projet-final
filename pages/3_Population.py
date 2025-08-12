@@ -1,8 +1,52 @@
-import streamlit as st
 import pandas as pd
+import streamlit as st
 import plotly.express as px
 
-# Chargement du fichier CSV
+# Lecture du CSV
+df = pd.read_csv('data/clean/population_with_geopoint.csv')
+
+# Conversion en int
+for col in ['0 à 19 ans', '20 à 39 ans', '40 à 59 ans', '60 à 74 ans', '75 ans et plus', 'Total']:
+    df[col] = df[col].astype(str).str.replace(r'[^\d]', '', regex=True).astype(int)
+
+# KPI 1 : Population totale (en millions)
+pop_total = df['Total'].sum()
+pop_total_fmt = f"{pop_total / 1_000_000:.1f} M"
+
+# KPI 2 : Département le plus jeune (nom seulement)
+dept_jeune = df.loc[df['0 à 19 ans'].idxmax(), 'Département']
+
+# KPI 3 : Département senior (nom seulement)
+df['proportion_seniors'] = df['75 ans et plus'] / df['Total']
+dept_senior = df.loc[df['proportion_seniors'].idxmax(), 'Département']
+
+# ==============================
+# TITRE PRINCIPAL
+# ==============================
+st.markdown("<h1 style='text-align:center;'>Analyse démographique en France</h1>", unsafe_allow_html=True)
+
+# Affichage Streamlit
+col1, col2, col3 = st.columns(3)
+col1.metric("Population Totale 🇫🇷", pop_total_fmt)
+col2.metric("Département le plus jeune", dept_jeune)
+col3.metric("Département sénior", dept_senior)
+
+st.header(" ")
+
+
+
+# ==============================
+# CONFIGURATION DE L'APPLICATION
+# ==============================
+st.set_page_config(page_title="Analyse démographique", layout="wide")
+
+# Palette de couleurs thématique (voitures électriques : vert & bleu)
+color_scale_main = 'Tealgrn'  # Teal/Green
+color_scale_secondary = 'Blues'
+
+# ==============================
+# CHARGEMENT ET PRÉPARATION DES DONNÉES
+# ==============================
 file_path = 'data/clean/population_with_geopoint.csv'
 df = pd.read_csv(file_path)
 
@@ -11,18 +55,19 @@ df[['lat', 'lon']] = df['geopoint'].str.split(',', expand=True)
 df['lat'] = df['lat'].astype(float)
 df['lon'] = df['lon'].astype(float)
 
-# Nettoyage de la colonne Total
+# Nettoyage des colonnes numériques
 df['Total'] = df['Total'].astype(str).str.replace(' ', '').str.replace('\u202f', '').str.replace('\xa0', '').astype(int)
-
-# Nettoyer les colonnes d'âge
 age_columns = ['0 à 19 ans', '20 à 39 ans', '40 à 59 ans', '60 à 74 ans', '75 ans et plus']
 for col in age_columns:
     df[col] = df[col].astype(str).str.replace(' ', '').str.replace('\u202f', '').str.replace('\xa0', '').astype(int)
 
-st.title("Analyse démographique des départements français")
 
-# 1. Pyramide des âges - France entière
+# ==============================
+# 1. PYRAMIDE DES ÂGES - FRANCE ENTIÈRE
+# ==============================
 st.header("1. Pyramide des âges - France entière")
+st.write("Commençons par une vue d’ensemble : cette pyramide horizontale représente la population totale par tranche d’âge, pour toute la France.")
+
 age_totals = [df[col].sum() for col in age_columns]
 age_labels = ['0-19 ans', '20-39 ans', '40-59 ans', '60-74 ans', '75+ ans']
 
@@ -30,15 +75,20 @@ fig_pyramid = px.bar(
     x=age_totals,
     y=age_labels,
     orientation='h',
-    title='Pyramide des âges - France entière',
-    labels={'x': 'Population', 'y': 'Tranches d\'âge'},
+    title='Répartition par tranche d’âge - France entière',
+    labels={'x': 'Population', 'y': 'Tranche d’âge'},
     color=age_totals,
-    color_continuous_scale='Blues'
+    color_continuous_scale=color_scale_main
 )
 st.plotly_chart(fig_pyramid, use_container_width=True)
 
-# 2. Analyse du vieillissement par département
+# ==============================
+# 2. ANALYSE DU VIEILLISSEMENT PAR DÉPARTEMENT
+# ==============================
 st.header("2. Analyse du vieillissement par département")
+st.write("Après la vue globale, zoomons sur le vieillissement de la population : "
+         "plus un département est rouge sur la carte, plus la proportion de seniors (75 ans et plus) est élevée.")
+
 df['ratio_vieux_jeunes'] = df['75 ans et plus'] / df['0 à 19 ans']
 df['pourcentage_seniors'] = (df['75 ans et plus'] / df['Total']) * 100
 
@@ -49,53 +99,60 @@ fig_vieillissement = px.scatter_mapbox(
     size='Total',
     color='pourcentage_seniors',
     hover_name='Département',
-    hover_data={
-        'pourcentage_seniors': ':.1f',
-        'ratio_vieux_jeunes': ':.2f',
-        'lat': False,
-        'lon': False
-    },
-    color_continuous_scale='Reds',
+    hover_data={'pourcentage_seniors': ':.1f', 'ratio_vieux_jeunes': ':.2f', 'lat': False, 'lon': False},
+    color_continuous_scale='RdPu',
     size_max=40,
     zoom=5,
     center={'lat': 46.5, 'lon': 2},
     mapbox_style='open-street-map',
-    title='Vieillissement de la population par département (% de 75+ ans)',
     labels={'pourcentage_seniors': '% 75+ ans'}
 )
-fig_vieillissement.update_layout(height=700, width=1000)
+fig_vieillissement.update_layout(height=700)
 st.plotly_chart(fig_vieillissement, use_container_width=True)
 
-# 3. Top 10 départements les plus jeunes vs plus vieux
+# ==============================
+# 3. TOP 10 JEUNES VS PLUS VIEUX
+# ==============================
 st.header("3. Top 10 départements les plus jeunes vs plus vieux")
+st.write("Regardons maintenant les départements qui comptent le plus grand nombre de jeunes, "
+         "et ceux où les seniors sont les plus nombreux.")
 
 df_sorted_young = df.nlargest(10, '0 à 19 ans')
 df_sorted_old = df.nlargest(10, '75 ans et plus')
 
-fig_young = px.bar(
-    df_sorted_young,
-    x='Département',
-    y='0 à 19 ans',
-    title='Top 10 - Départements avec le plus de jeunes (0-19 ans)',
-    color='0 à 19 ans',
-    color_continuous_scale='Greens'
-)
-fig_young.update_xaxes(tickangle=45)
-st.plotly_chart(fig_young, use_container_width=True)
+col1, col2 = st.columns(2)
 
-fig_old = px.bar(
-    df_sorted_old,
-    x='Département',
-    y='75 ans et plus',
-    title='Top 10 - Départements avec le plus de seniors (75+ ans)',
-    color='75 ans et plus',
-    color_continuous_scale='Oranges'
-)
-fig_old.update_xaxes(tickangle=45)
-st.plotly_chart(fig_old, use_container_width=True)
+with col1:
+    fig_young = px.bar(
+        df_sorted_young,
+        x='Département',
+        y='0 à 19 ans',
+        title='Top 10 - Jeunes (0-19 ans)',
+        color='0 à 19 ans',
+        color_continuous_scale=color_scale_secondary
+    )
+    fig_young.update_xaxes(tickangle=45)
+    st.plotly_chart(fig_young, use_container_width=True)
 
-# 4. Analyse des actifs (20-59 ans)
+with col2:
+    fig_old = px.bar(
+        df_sorted_old,
+        x='Département',
+        y='75 ans et plus',
+        title='Top 10 - Seniors (75+ ans)',
+        color='75 ans et plus',
+        color_continuous_scale=color_scale_main
+    )
+    fig_old.update_xaxes(tickangle=45)
+    st.plotly_chart(fig_old, use_container_width=True)
+
+# ==============================
+# 4. ANALYSE DES ACTIFS (20-59 ans)
+# ==============================
 st.header("4. Analyse des actifs (20-59 ans)")
+st.write("Les actifs représentent une part essentielle de la population : cette carte montre leur répartition en France, "
+         "avec la taille des cercles proportionnelle au nombre d’actifs.")
+
 df['actifs'] = df['20 à 39 ans'] + df['40 à 59 ans']
 df['pourcentage_actifs'] = (df['actifs'] / df['Total']) * 100
 
@@ -106,35 +163,32 @@ fig_actifs = px.scatter_mapbox(
     size='actifs',
     color='pourcentage_actifs',
     hover_name='Département',
-    hover_data={
-        'actifs': ':,',
-        'pourcentage_actifs': ':.1f',
-        'lat': False,
-        'lon': False
-    },
-    color_continuous_scale='Viridis',
+    hover_data={'actifs': ':,', 'pourcentage_actifs': ':.1f', 'lat': False, 'lon': False},
+    color_continuous_scale=color_scale_secondary,
     size_max=45,
     zoom=5,
     center={'lat': 46.5, 'lon': 2},
     mapbox_style='open-street-map',
-    title='Répartition de la population active (20-59 ans)',
     labels={'pourcentage_actifs': '% Actifs'}
 )
-fig_actifs.update_layout(height=700, width=1000)
+fig_actifs.update_layout(height=700)
 st.plotly_chart(fig_actifs, use_container_width=True)
 
-# 5. Scatter plot - jeunes vs seniors
+# ==============================
+# 5. RELATION JEUNES VS SENIORS
+# ==============================
 st.header("5. Relation entre population jeune et senior par département")
+st.write("Enfin, ce nuage de points permet de visualiser la relation entre le nombre de jeunes (0-19 ans) "
+         "et celui des seniors (75+ ans) dans chaque département.")
+
 fig_scatter = px.scatter(
     df,
     x='0 à 19 ans',
     y='75 ans et plus',
     size='Total',
     hover_name='Département',
-    title='Relation entre population jeune et senior par département',
-    labels={'x': 'Population 0-19 ans', 'y': 'Population 75+ ans'},
+    labels={'0 à 19 ans': 'Population 0-19 ans', '75 ans et plus': 'Population 75+ ans'},
     color='Total',
-    color_continuous_scale='Rainbow'
+    color_continuous_scale=color_scale_main
 )
 st.plotly_chart(fig_scatter, use_container_width=True)
-

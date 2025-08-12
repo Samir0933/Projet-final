@@ -1,5 +1,5 @@
-import streamlit as st
 import pandas as pd
+import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -7,12 +7,40 @@ from datetime import datetime
 import warnings
 warnings.filterwarnings('ignore')
 
+# Chargement du dataset
+file_path = 'data/raw/BornesPropres.csv'
+df = pd.read_csv(file_path)
+
+# KPI 1 : Nombre total de stations uniques
+total_stations = df['id_station_local'].nunique()
+
+# KPI 2 : Nombre total de points de charge
+total_points_charge = df['nbre_pdc'].sum()
+
+st.title("État des lieux de la croissance de la mobilité électrique")
+st.subheader("Objectif : Comprendre le déploiement des infrastructures et du parc de véhicules électriques")
+
+
+col1, col2= st.columns(2)
+
+
+
+col1.metric("Nombre total de stations", total_stations)
+col2.metric("Nombre total de points de charge", total_points_charge)
+
+st.header(" ")
+
+
+# ======================
+# Classe d'analyse
+# ======================
 class VEChargingAnalyzer:
     def __init__(self, df):
         self.df = df.copy()
         self.prepare_data()
 
     def prepare_data(self):
+        # Nettoyage et préparation des données
         self.df['date_mise_en_service'] = pd.to_datetime(self.df['date_mise_en_service'], errors='coerce')
         self.df['date_maj'] = pd.to_datetime(self.df['date_maj'], errors='coerce')
 
@@ -51,6 +79,7 @@ class VEChargingAnalyzer:
         self.df['nom_operateur'] = self.df['nom_operateur'].fillna('Inconnu').astype(str)
         self.df['nom_station'] = self.df['nom_station'].fillna('Station sans nom').astype(str)
 
+        # Données fictives sur le parc de véhicules électriques
         years = list(range(2015, 2026))
         ve_data = {
             'annee': years,
@@ -59,6 +88,9 @@ class VEChargingAnalyzer:
         }
         self.ve_df = pd.DataFrame(ve_data)
 
+    # ======================
+    # Graphiques
+    # ======================
     def plot_evolution_bornes(self):
         df_valid = self.df.dropna(subset=['annee'])
         if len(df_valid) == 0:
@@ -71,13 +103,14 @@ class VEChargingAnalyzer:
 
         fig.add_trace(go.Scatter(
             x=bornes_par_an['annee'], y=bornes_par_an['cumul'],
-            mode='lines+markers', name="Cumul bornes"), row=1, col=1)
+            mode='lines+markers', name="Cumul bornes",
+            marker_color='green', line=dict(color='green')), row=1, col=1)
 
         fig.add_trace(go.Bar(
             x=bornes_par_an['annee'], y=bornes_par_an['total_bornes'],
-            name="Installations annuelles"), row=1, col=2)
+            name="Installations annuelles", marker_color='blue'), row=1, col=2)
 
-        fig.update_layout(title_text="Évolution des bornes", height=500)
+        fig.update_layout(title_text="Évolution des bornes de recharge", height=500)
         return fig
 
     def plot_ratio_bornes_ve(self):
@@ -97,11 +130,11 @@ class VEChargingAnalyzer:
 
         fig.add_trace(go.Scatter(
             x=ratio_data['annee'], y=ratio_data['ratio_actual'],
-            mode='lines+markers', name="Ratio actuel"), row=1, col=1)
+            mode='lines+markers', name="Ratio actuel", line=dict(color='blue')), row=1, col=1)
 
         fig.add_trace(go.Scatter(
             x=ratio_data['annee'], y=[10]*len(ratio_data),
-            mode='lines', name="Objectif AFI", line=dict(dash='dash')), row=1, col=1)
+            mode='lines', name="Objectif AFI", line=dict(color='green', dash='dash')), row=1, col=1)
 
         fig.add_trace(go.Bar(
             x=ratio_data['annee'], y=ratio_data['ecart'],
@@ -119,7 +152,7 @@ class VEChargingAnalyzer:
 
         fig.add_trace(go.Bar(
             x=top_operateurs.values, y=top_operateurs.index,
-            orientation='h'), row=1, col=1)
+            orientation='h', marker_color='blue'), row=1, col=1)
 
         top5_ops = top_operateurs.head(5).index
         for op in top5_ops:
@@ -132,25 +165,37 @@ class VEChargingAnalyzer:
         fig.update_layout(title="Analyse des opérateurs", height=500)
         return fig
 
-    def generer_tous_graphiques(self):
-        figs = []
-        figs.append(('Évolution des bornes', self.plot_evolution_bornes()))
-        figs.append(('Ratio Bornes / Véhicules Électriques', self.plot_ratio_bornes_ve()))
-        figs.append(('Analyse des opérateurs', self.plot_operateurs_analysis()))
-        return figs
-
-
-# --- Programme principal ---
-file_path = 'data/raw/BornesPropres.csv'
-df = pd.read_csv(file_path)
-
+# ======================
+# Interface Streamlit
+# ======================
 analyzer = VEChargingAnalyzer(df)
 
-st.title("Analyse des bornes de recharge VE")
 
-for title, fig in analyzer.generer_tous_graphiques():
-    st.header(title)
-    if fig:
-        st.plotly_chart(fig)
-    else:
-        st.write("Pas de données à afficher.")
+# --- 1. Évolution des bornes ---
+st.markdown("### Quelle est l’évolution du nombre de bornes de recharge par an ?")
+st.markdown("Pour mieux comprendre l’ampleur des infrastructures disponibles, il est essentiel de visualiser leur évolution annuelle.")
+fig_bornes = analyzer.plot_evolution_bornes()
+if fig_bornes:
+    st.plotly_chart(fig_bornes)
+
+# Transition
+st.markdown("Après avoir vu l’évolution des bornes, intéressons-nous au parc de véhicules électriques, "
+            "car c’est lui qui influence directement la demande en infrastructures.")
+
+# --- 2. Ratio bornes / véhicules ---
+st.markdown("### Quel est le ratio bornes / véhicules (vs préconisation AFI = 1 borne pour 10 VE) ?")
+st.markdown("En croisant les données sur le nombre de bornes et le parc de véhicules électriques, "
+            "on peut évaluer si l’offre suit la demande.")
+fig_ratio = analyzer.plot_ratio_bornes_ve()
+if fig_ratio:
+    st.plotly_chart(fig_ratio)
+
+# Transition
+st.markdown("Enfin, il est intéressant de comprendre **qui** déploie ces bornes "
+            "pour analyser la dynamique du marché.")
+
+# --- 3. Acteurs ---
+st.markdown("### Quels acteurs (opérateurs/aménageurs) dominent l’installation ?")
+fig_ops = analyzer.plot_operateurs_analysis()
+if fig_ops:
+    st.plotly_chart(fig_ops)
