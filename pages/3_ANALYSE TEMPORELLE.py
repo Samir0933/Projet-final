@@ -67,10 +67,10 @@ class TrafficAnalyzer:
         self.df_traffic = df_traffic.copy()
 
     def plot_evolution_trafic(self):
-    # Calcul de la moyenne du TMJA par année
+        # Calcul de la moyenne du TMJA par année
         trafic_moyen = self.df_traffic.groupby('anneeMesureTrafic')['TMJA_actualise'].mean().reset_index()
 
-    # Forcer le type entier pour éviter les décimales dans l'axe X
+        # Forcer le type entier pour éviter les décimales dans l'axe X
         trafic_moyen['anneeMesureTrafic'] = trafic_moyen['anneeMesureTrafic'].astype(int)
     
         fig = go.Figure()
@@ -83,7 +83,7 @@ class TrafficAnalyzer:
             marker=dict(size=8, color=PRIMARY_COLOR)
         ))
     
-    # Format de l'axe X : ticks tous les ans et pas de décimales
+        # Format de l'axe X : ticks tous les ans et pas de décimales
         fig.update_xaxes(dtick=1, tickformat="d")
     
         fig.update_layout(
@@ -99,6 +99,26 @@ class TrafficAnalyzer:
 st.set_page_config(page_title="Analyse Temporelle", page_icon="⚡", layout="wide")
 
 st.title("III. ANALYSE TEMPORELLE")
+
+# Affichage des métriques juste après le titre principal
+try:
+    df_traffic = pd.read_csv('data/raw/TMJA2016_2019_Propre.csv')
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("TMJA moyen global", f"{df_traffic['TMJA_actualise'].mean():,.0f}")
+    with col2:
+        evol = df_traffic[df_traffic['anneeMesureTrafic'] == 2019]['TMJA_actualise'].mean() - \
+               df_traffic[df_traffic['anneeMesureTrafic'] == 2016]['TMJA_actualise'].mean()
+        st.metric("Évolution 2016-2019", f"{evol:+,.0f}")
+    with col3:
+        st.metric("Points de mesure", f"{len(df_traffic):,}")
+except FileNotFoundError:
+    st.error("Le fichier TMJA2016_2019_Propre.csv est introuvable.")
+    df_traffic = None
+except Exception as e:
+    st.error(f"Erreur lors du chargement des données : {str(e)}")
+    df_traffic = None
+
 st.markdown("""
 **Objectif** : Détecter les tendances, pics et retards dans l'équipement en bornes de recharge électrique et observer l'évolution du trafic routier.
 
@@ -109,7 +129,7 @@ st.markdown("""
 
 def page_3_saisonnalite():
     # SECTION 1 - Installations de bornes
-    st.header("📈 Saisonnalité des installations de bornes")
+    st.header("Saisonnalité des installations de bornes")
     st.markdown("""
     Ce graphique montre les pics et creux d’installations de bornes au fil de l’année.  
     On peut identifier les saisons les plus actives et repérer les éventuels ralentissements.
@@ -121,32 +141,14 @@ def page_3_saisonnalite():
     st.markdown("---")
     
     # SECTION 2 - Évolution du trafic
-    st.header("🚗 Évolution du trafic routier en France")
+    st.header("Évolution du trafic routier en France")
     st.markdown("""
     Cette visualisation met en évidence l'évolution du trafic moyen journalier (TMJA).  
     En comparant avec la saisonnalité des bornes, on peut voir s'il existe un lien entre trafic et installation.
     """)
-    try:
-        df_traffic = pd.read_csv('data/raw/TMJA2016_2019_Propre.csv')
+    if df_traffic is not None:
         traffic_analyzer = TrafficAnalyzer(df_traffic)
         st.plotly_chart(traffic_analyzer.plot_evolution_trafic(), use_container_width=True)
-        
-        # Statistiques clés
-        st.subheader("📊 Statistiques clés du trafic")
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric("TMJA moyen global", f"{df_traffic['TMJA_actualise'].mean():,.0f}")
-        with col2:
-            evol = df_traffic[df_traffic['anneeMesureTrafic'] == 2019]['TMJA_actualise'].mean() - \
-                   df_traffic[df_traffic['anneeMesureTrafic'] == 2016]['TMJA_actualise'].mean()
-            st.metric("Évolution 2016-2019", f"{evol:+,.0f}")
-        with col3:
-            st.metric("Points de mesure", f"{len(df_traffic):,}")
-        
-    except FileNotFoundError:
-        st.error("Le fichier TMJA2016_2019_Propre.csv est introuvable.")
-    except Exception as e:
-        st.error(f"Erreur lors du chargement des données : {str(e)}")
 
 if __name__ == "__main__":
     page_3_saisonnalite()
