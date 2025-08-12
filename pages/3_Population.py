@@ -19,8 +19,7 @@ age_columns = ['0 à 19 ans', '20 à 39 ans', '40 à 59 ans', '60 à 74 ans', '7
 for col in age_columns:
     df[col] = df[col].astype(str).str.replace(' ', '').str.replace('\u202f', '').str.replace('\xa0', '').astype(int)
 
-st.title("Analyse démographique des départements français")
-
+st.title("POPULATION")
 # 1. Pyramide des âges - France entière
 st.header("1. Pyramide des âges - France entière")
 age_totals = [df[col].sum() for col in age_columns]

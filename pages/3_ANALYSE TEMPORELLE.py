@@ -48,7 +48,7 @@ class VEChargingAnalyzer:
 
 
 # Dans ta page 3 Streamlit
-
+st.title("III. ANALYSE TEMPORELLE")
 def page_3_saisonnalite():
     st.title(" À quelle période observe-t-on les pics d’installation de bornes ?")
     file_path = 'data/raw/BornesPropres.csv'
