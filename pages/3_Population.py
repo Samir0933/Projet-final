@@ -23,7 +23,7 @@ dept_senior = df.loc[df['proportion_seniors'].idxmax(), 'Département']
 # ==============================
 # TITRE PRINCIPAL
 # ==============================
-st.markdown("<h1 style='text-align:center; color:#00796B;'>Analyse démographique en France</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align:center;'>Analyse démographique en France</h1>", unsafe_allow_html=True)
 
 # Affichage Streamlit
 col1, col2, col3 = st.columns(3)

@@ -172,7 +172,7 @@ analyzer = VEChargingAnalyzer(df)
 
 
 # --- 1. Évolution des bornes ---
-st.markdown("### 1️⃣ Quelle est l’évolution du nombre de bornes de recharge par an ?")
+st.markdown("### Quelle est l’évolution du nombre de bornes de recharge par an ?")
 st.markdown("Pour mieux comprendre l’ampleur des infrastructures disponibles, il est essentiel de visualiser leur évolution annuelle.")
 fig_bornes = analyzer.plot_evolution_bornes()
 if fig_bornes:
@@ -183,7 +183,7 @@ st.markdown("Après avoir vu l’évolution des bornes, intéressons-nous au par
             "car c’est lui qui influence directement la demande en infrastructures.")
 
 # --- 2. Ratio bornes / véhicules ---
-st.markdown("### 2️⃣ Quel est le ratio bornes / véhicules (vs préconisation AFI = 1 borne pour 10 VE) ?")
+st.markdown("### Quel est le ratio bornes / véhicules (vs préconisation AFI = 1 borne pour 10 VE) ?")
 st.markdown("En croisant les données sur le nombre de bornes et le parc de véhicules électriques, "
             "on peut évaluer si l’offre suit la demande.")
 fig_ratio = analyzer.plot_ratio_bornes_ve()
@@ -195,7 +195,7 @@ st.markdown("Enfin, il est intéressant de comprendre **qui** déploie ces borne
             "pour analyser la dynamique du marché.")
 
 # --- 3. Acteurs ---
-st.markdown("### 3️⃣ Quels acteurs (opérateurs/aménageurs) dominent l’installation ?")
+st.markdown("### Quels acteurs (opérateurs/aménageurs) dominent l’installation ?")
 fig_ops = analyzer.plot_operateurs_analysis()
 if fig_ops:
     st.plotly_chart(fig_ops)

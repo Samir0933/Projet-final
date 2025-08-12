@@ -10,7 +10,7 @@ from shapely import wkt
 # =======================================================
 # TITRE PRINCIPAL - II. ANALYSE GÉOGRAPHIQUE
 # =======================================================
-st.title("II. ANALYSE GÉOGRAPHIQUE 🚗⚡")
+st.title("II. ANALYSE GÉOGRAPHIQUE")
 
 st.markdown("""
 **Objectif :** Évaluer la cohérence entre infrastructures, population et trafic routier.
@@ -103,7 +103,7 @@ tmja_df = load_tmja_data()
 # =======================================================
 # 3. ANALYSE BORNES VS DENSITÉ
 # =======================================================
-st.header("📍 Bornes vs Densité de population")
+st.header("Bornes vs Densité de population")
 st.markdown("Commençons par vérifier si **la répartition des bornes suit la densité de population**.")
 
 summary = df.groupby('Niv_densité', as_index=False)['nb_bornes'].sum()
@@ -118,7 +118,7 @@ st.markdown("On observe ainsi les zones les mieux équipées selon leur densité
 # =======================================================
 # 4. ANALYSE TRAFIC TMJA
 # =======================================================
-st.header("🚦 Bornes et axes à fort trafic")
+st.header("Bornes et axes à fort trafic")
 st.markdown("Top 10 de la somme annuelle du TMJA par route.")
 
 sum_route = tmja_df.groupby("route")["TMJA_actualise"].sum().reset_index()
@@ -134,7 +134,7 @@ st.markdown("Ces données permettront de comparer les zones de trafic intense av
 # =======================================================
 # 5. MATRICE DE CORRÉLATION
 # =======================================================
-st.subheader("📊 Corrélations TMJA")
+st.subheader("Corrélations TMJA")
 numeric_cols = ['longueur', 'TMJA_actualise', 'anneeMesureTrafic', 'depPrD']
 available_cols = [col for col in numeric_cols if col in tmja_df.columns]
 if len(available_cols) >= 2:
@@ -147,7 +147,7 @@ if len(available_cols) >= 2:
 # =======================================================
 # 6. CARTE BORNE + TRAFIC
 # =======================================================
-st.header("🗺️ Carte : Bornes & axes routiers")
+st.header("Carte : Bornes & axes routiers")
 st.markdown("Localisation conjointe des **bornes** et des **axes routiers** pour identifier les zones sous-équipées.")
 
 # Carte
@@ -178,7 +178,7 @@ except Exception as e:
 # =======================================================
 # 7. CORRÉLATION TMJA vs BORNES
 # =======================================================
-st.header("📈 Corrélation TMJA vs Bornes")
+st.header("Corrélation TMJA vs Bornes")
 bornes_with_dept = load_bornes_with_dept()
 if bornes_with_dept is not None:
     bornes_clean = bornes_with_dept.dropna(subset=["num_departement"])
