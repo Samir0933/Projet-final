@@ -5,7 +5,7 @@ setup_env :
 	pyenv local $(ENV_NAME)
 	@echo "Environment setup complete."
 
-install_deps : setup_env
+install_deps :
 	@echo "Installing dependencies..."
 	pip install -r requirements.txt
 	@echo "Dependencies installed."
