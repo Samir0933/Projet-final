@@ -1,6 +1,39 @@
-import streamlit as st
 import pandas as pd
+import streamlit as st
 import plotly.express as px
+
+# Lecture du CSV
+df = pd.read_csv('data/clean/population_with_geopoint.csv')
+
+# Conversion en int
+for col in ['0 à 19 ans', '20 à 39 ans', '40 à 59 ans', '60 à 74 ans', '75 ans et plus', 'Total']:
+    df[col] = df[col].astype(str).str.replace(r'[^\d]', '', regex=True).astype(int)
+
+# KPI 1 : Population totale (en millions)
+pop_total = df['Total'].sum()
+pop_total_fmt = f"{pop_total / 1_000_000:.1f} M"
+
+# KPI 2 : Département le plus jeune (nom seulement)
+dept_jeune = df.loc[df['0 à 19 ans'].idxmax(), 'Département']
+
+# KPI 3 : Département senior (nom seulement)
+df['proportion_seniors'] = df['75 ans et plus'] / df['Total']
+dept_senior = df.loc[df['proportion_seniors'].idxmax(), 'Département']
+
+# ==============================
+# TITRE PRINCIPAL
+# ==============================
+st.markdown("<h1 style='text-align:center; color:#00796B;'>Analyse démographique en France</h1>", unsafe_allow_html=True)
+
+# Affichage Streamlit
+col1, col2, col3 = st.columns(3)
+col1.metric("Population Totale 🇫🇷", pop_total_fmt)
+col2.metric("Département le plus jeune", dept_jeune)
+col3.metric("Département sénior", dept_senior)
+
+st.header(" ")
+
+
 
 # ==============================
 # CONFIGURATION DE L'APPLICATION
@@ -28,11 +61,6 @@ age_columns = ['0 à 19 ans', '20 à 39 ans', '40 à 59 ans', '60 à 74 ans', '7
 for col in age_columns:
     df[col] = df[col].astype(str).str.replace(' ', '').str.replace('\u202f', '').str.replace('\xa0', '').astype(int)
 
-# ==============================
-# TITRE PRINCIPAL
-# ==============================
-st.markdown("<h1 style='text-align:center; color:#00796B;'>Analyse démographique en France</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align:center; font-size:18px;'>Une exploration visuelle des structures d’âge et de la répartition de la population par département.</p>", unsafe_allow_html=True)
 
 # ==============================
 # 1. PYRAMIDE DES ÂGES - FRANCE ENTIÈRE
