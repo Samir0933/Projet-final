@@ -119,7 +119,7 @@ st.markdown("On observe ainsi les zones les mieux équipées selon leur densité
 # 4. ANALYSE TRAFIC TMJA
 # =======================================================
 st.header("🚦 Bornes et axes à fort trafic")
-st.markdown("Voyons si **les bornes suivent les axes routiers à fort trafic** (TMJA).")
+st.markdown("Top 10 de la somme annuelle du TMJA par route.")
 
 sum_route = tmja_df.groupby("route")["TMJA_actualise"].sum().reset_index()
 top_10_route = sum_route.sort_values("TMJA_actualise", ascending=False).head(10)
