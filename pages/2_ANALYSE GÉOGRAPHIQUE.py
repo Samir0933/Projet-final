@@ -5,7 +5,7 @@ from scipy.spatial import cKDTree
 import numpy as np
 import plotly.express as px
 
-st.title("Analyse des bornes de recharge")
+st.title("II. ANALYSE GÉOGRAPHIQUE")
 
 # -------------------------
 # 1. Fonctions utilitaires

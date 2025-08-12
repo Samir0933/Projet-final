@@ -135,6 +135,7 @@ class VEChargingAnalyzer:
     def generer_tous_graphiques(self):
         figs = []
         figs.append(('Évolution des bornes', self.plot_evolution_bornes()))
+        st.write("Quelle est l’évolution du nombre de bornes de recharge par an ?")
         figs.append(('Ratio Bornes / Véhicules Électriques', self.plot_ratio_bornes_ve()))
         figs.append(('Analyse des opérateurs', self.plot_operateurs_analysis()))
         return figs
@@ -146,7 +147,8 @@ df = pd.read_csv(file_path)
 
 analyzer = VEChargingAnalyzer(df)
 
-st.title("Analyse des bornes de recharge VE")
+st.title("I. ÉTAT DES LIEUX DE LA CROISSANCE")
+st.subheader("Objectif : Comprendre le niveau actuel de déploiement des véhicules électriques et des infrastructures ")
 
 for title, fig in analyzer.generer_tous_graphiques():
     st.header(title)
