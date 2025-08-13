@@ -189,6 +189,8 @@ if bornes_with_dept is not None:
     tmja_dept = tmja_df.groupby("depPrD")["TMJA_actualise"].mean().reset_index()
     df_merge = pd.merge(bornes_dept, tmja_dept, left_on="num_departement", right_on="depPrD", how="inner")
 
+
+
     slope, intercept, y_pred, r2 = simple_linear_regression(df_merge["TMJA_actualise"], df_merge["bornes_count"])
     df_merge["y_pred"] = y_pred
 
@@ -198,3 +200,20 @@ if bornes_with_dept is not None:
     fig6.add_trace(go.Scatter(x=df_merge["TMJA_actualise"], y=df_merge["y_pred"],
                               mode="lines", name="Régression", line=dict(color='red')))
     st.plotly_chart(fig6)
+    # ➕ Calcul du coefficient de corrélation de Pearson
+    corr = df_merge["TMJA_actualise"].corr(df_merge["bornes_count"])
+
+    # ➕ Interprétation du coefficient
+    abs_corr = abs(corr)
+    if abs_corr < 0.2:
+        interpretation = "très faible"
+    elif abs_corr < 0.4:
+        interpretation = "faible"
+    elif abs_corr < 0.6:
+        interpretation = "modérée"
+    elif abs_corr < 0.8:
+        interpretation = "forte"
+    else:
+        interpretation = "très forte"
+
+    st.markdown(f"**Coefficient de corrélation de Pearson :** {corr:.3f} ({interpretation})")
