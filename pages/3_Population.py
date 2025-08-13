@@ -3,7 +3,7 @@ import streamlit as st
 import plotly.express as px
 
 # Lecture du CSV
-df = pd.read_csv('data/clean/population_with_geopoint.csv')
+df = pd.read_csv('data_prod/population_with_geopoint.csv')
 
 # Conversion en int
 for col in ['0 à 19 ans', '20 à 39 ans', '40 à 59 ans', '60 à 74 ans', '75 ans et plus', 'Total']:
@@ -47,7 +47,7 @@ color_scale_secondary = 'Blues'
 # ==============================
 # CHARGEMENT ET PRÉPARATION DES DONNÉES
 # ==============================
-file_path = 'data/clean/population_with_geopoint.csv'
+file_path = 'data_prod/population_with_geopoint.csv'
 df = pd.read_csv(file_path)
 
 # Séparer latitude et longitude depuis la colonne geopoint

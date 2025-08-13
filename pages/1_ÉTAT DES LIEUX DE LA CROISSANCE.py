@@ -8,7 +8,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Chargement du dataset
-file_path = 'data/raw/BornesPropres.csv'
+file_path = 'data_prod/BornesPropresLight.csv'
 df = pd.read_csv(file_path)
 
 # KPI 1 : Nombre total de stations uniques
