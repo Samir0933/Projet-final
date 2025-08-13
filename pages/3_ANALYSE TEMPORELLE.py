@@ -117,7 +117,7 @@ def page_3_saisonnalite():
     st.markdown("---")
 
     # SECTION 2 - Évolution du trafic filtré
-    st.header("🚗 Évolution du trafic routier en France")
+    st.header("Évolution du trafic routier en France")
     if df_traffic is not None:
         df_traffic_filtered = df_traffic[
             (df_traffic['anneeMesureTrafic'] >= annees_selection[0]) &

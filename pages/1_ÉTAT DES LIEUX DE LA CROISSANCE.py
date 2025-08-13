@@ -17,7 +17,7 @@ total_stations = df['id_station_local'].nunique()
 # KPI 2 : Nombre total de points de charge
 total_points_charge = df['nbre_pdc'].sum()
 
-st.title("État des lieux de la croissance de la mobilité électrique")
+st.title("I. État des lieux de la croissance de la mobilité électrique")
 st.subheader("Objectif : Comprendre le déploiement des infrastructures et du parc de véhicules électriques")
 
 

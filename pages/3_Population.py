@@ -65,7 +65,7 @@ for col in age_columns:
 # ==============================
 # 1. PYRAMIDE DES ÂGES - FRANCE ENTIÈRE
 # ==============================
-st.header("1. Pyramide des âges - France entière")
+st.header("Pyramide des âges - France entière")
 st.write("Commençons par une vue d’ensemble : cette pyramide horizontale représente la population totale par tranche d’âge, pour toute la France.")
 
 age_totals = [df[col].sum() for col in age_columns]
@@ -85,7 +85,7 @@ st.plotly_chart(fig_pyramid, use_container_width=True)
 # ==============================
 # 2. ANALYSE DU VIEILLISSEMENT PAR DÉPARTEMENT
 # ==============================
-st.header("2. Analyse du vieillissement par département")
+st.header("Analyse du vieillissement par département")
 st.write("Après la vue globale, zoomons sur le vieillissement de la population : "
          "plus un département est rouge sur la carte, plus la proportion de seniors (75 ans et plus) est élevée.")
 
@@ -113,7 +113,7 @@ st.plotly_chart(fig_vieillissement, use_container_width=True)
 # ==============================
 # 3. TOP 10 JEUNES VS PLUS VIEUX
 # ==============================
-st.header("3. Top 10 départements les plus jeunes vs plus vieux")
+st.header("Top 10 départements les plus jeunes vs plus vieux")
 st.write("Regardons maintenant les départements qui comptent le plus grand nombre de jeunes, "
          "et ceux où les seniors sont les plus nombreux.")
 
@@ -149,7 +149,7 @@ with col2:
 # ==============================
 # 4. ANALYSE DES ACTIFS (20-59 ans)
 # ==============================
-st.header("4. Analyse des actifs (20-59 ans)")
+st.header("Analyse des actifs (20-59 ans)")
 st.write("Les actifs représentent une part essentielle de la population : cette carte montre leur répartition en France, "
          "avec la taille des cercles proportionnelle au nombre d’actifs.")
 
@@ -177,7 +177,7 @@ st.plotly_chart(fig_actifs, use_container_width=True)
 # ==============================
 # 5. RELATION JEUNES VS SENIORS
 # ==============================
-st.header("5. Relation entre population jeune et senior par département")
+st.header("Relation entre population jeune et senior par département")
 st.write("Enfin, ce nuage de points permet de visualiser la relation entre le nombre de jeunes (0-19 ans) "
          "et celui des seniors (75+ ans) dans chaque département.")
 
