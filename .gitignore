@@ -211,3 +211,7 @@ data/*
 
 # Python virtual environments
 .python-version
+
+# Files
+flo-copie.ipynb
+flo-structure.ipynb
