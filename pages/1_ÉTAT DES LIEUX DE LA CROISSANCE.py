@@ -139,7 +139,7 @@ class VEChargingAnalyzer:
         fig.add_trace(go.Bar(
             x=ratio_data['annee'], y=ratio_data['ecart'],
             name="Écart à l’objectif",
-            marker_color=['red' if x > 0 else 'green' for x in ratio_data['ecart']]
+            marker_color=['green' if x > 0 else 'red' for x in ratio_data['ecart']]
         ), row=2, col=1)
 
         fig.update_layout(title_text="Ratio Bornes / Véhicules Électriques", height=600)
