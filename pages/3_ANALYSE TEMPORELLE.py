@@ -78,7 +78,7 @@ st.title("III. ANALYSE TEMPORELLE")
 
 # Chargement des données trafic
 try:
-    df_traffic = pd.read_csv('data/raw/TMJA2016_2019_Propre.csv')
+    df_traffic = pd.read_csv('data_prod/TMJA2016_2019_Propre.csv')
     col1, col2, col3 = st.columns(3)
     with col1:
         st.metric("TMJA moyen global", f"{df_traffic['TMJA_actualise'].mean():,.0f}")
@@ -109,7 +109,7 @@ st.markdown("""
 def page_3_saisonnalite():
     # SECTION 1 - Installations de bornes filtrées
     st.header("Saisonnalité des installations de bornes")
-    df_bornes = pd.read_csv('data/raw/BornesPropres.csv')
+    df_bornes = pd.read_csv('data_prod/BornesPropresLight.csv')
     analyzer = VEChargingAnalyzer(df_bornes)
     analyzer.prepare_data(annees_selection[0], annees_selection[1])
     st.plotly_chart(analyzer.plot_saisonnalite_installations(), use_container_width=True)

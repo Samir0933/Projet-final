@@ -36,11 +36,11 @@ def to_gdf(df, lon_col, lat_col, crs="EPSG:4326"):
 @st.cache_data
 def load_data():
     try:
-        pop = pd.read_csv("data/raw/population_densite.csv", delimiter=",", encoding='utf-8')
+        pop = pd.read_csv("data_prod/population_densite.csv", delimiter=",", encoding='utf-8')
         pop['Niv_densité'] = pop['Niv_densité'].astype(int)
         gdf_pop = to_gdf(pop, "longitude_decimal", "latitude_decimal")
 
-        bornes = pd.read_csv("data/raw/BornesPropres.csv", delimiter=",", encoding='utf-8')
+        bornes = pd.read_csv("data_prod/BornesPropresLight.csv", delimiter=",", encoding='utf-8')
         bornes = bornes.dropna(subset=['consolidated_latitude', 'consolidated_longitude'])
         gdf_bornes = to_gdf(bornes, "consolidated_longitude", "consolidated_latitude")
     except FileNotFoundError:
@@ -71,7 +71,7 @@ def load_data():
 @st.cache_data
 def load_tmja_data():
     try:
-        return pd.read_csv("data/raw/TMJA2016_2019_Propre.csv")
+        return pd.read_csv("data_prod/TMJA2016_2019_Propre.csv")
     except FileNotFoundError:
         st.error("Fichier TMJA non trouvé.")
         st.stop()
@@ -79,7 +79,7 @@ def load_tmja_data():
 @st.cache_data
 def load_bornes_with_dept():
     try:
-        return pd.read_csv("data/clean/BornesPropres_with_depart_v2.csv")
+        return pd.read_csv("data_prod/BornesPropres_with_depart_light.csv")
     except FileNotFoundError:
         st.warning("Fichier BornesPropres_with_depart_v2.csv manquant.")
         return None
@@ -156,7 +156,7 @@ try:
     gdf_tmja = gpd.GeoDataFrame(tmja_df, geometry='geopoint_depart', crs="EPSG:4326")
     gdf_tmja['lat'] = gdf_tmja.geometry.y
     gdf_tmja['lon'] = gdf_tmja.geometry.x
-    bornes_raw = pd.read_csv("data/raw/BornesPropres.csv", delimiter=",", encoding='utf-8')
+    bornes_raw = pd.read_csv("data_prod/BornesPropresLight.csv", delimiter=",", encoding='utf-8')
     bornes_clean = bornes_raw.dropna(subset=['consolidated_latitude', 'consolidated_longitude'])
 
     fig5 = go.Figure()
