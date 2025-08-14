@@ -22,22 +22,14 @@ st.markdown("""
 Notre analyse se décompose en **quatre étapes clés** pour répondre à la problématique centrale :
 
 1. **État des Lieux de la Croissance**  
-   - Évolution annuelle du nombre de points de recharge installés  
-   - Croissance annuelle du parc de véhicules électriques  
-   - Calcul du ratio points de recharge / véhicules électriques vs recommandation européenne (1 pour 10)
+  
 
 2. **Analyse Géographique**  
-   - Corrélation entre densité de points de recharge et densité de population  
-   - Identification des zones sous-équipées (bornes/1000 habitants, bornes/TMJA)  
-   - Cartographie des clusters géographiques
 
 3. **Analyse Temporelle**  
-   - Détection des tendances, pics d’installation et retards régionaux  
-   - Suivi par rapport aux objectifs de la Loi d’Orientation des Mobilités (LOM)
+   
 
-4. **Recommandations et Scénarios**  
-   - Identification des zones prioritaires pour le déploiement  
-   - Modélisation des besoins futurs selon la croissance du parc VE
+
 """)
 
 st.markdown("---")

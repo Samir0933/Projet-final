@@ -36,12 +36,7 @@ Identification des pics d'installation de bornes et analyse des retards d'équip
 
 Suivi de la trajectoire de déploiement par rapport aux objectifs fixés par la Loi d'Orientation des Mobilités (LOM).
 
-4. Recommandations et Scénarios
-Cette dernière étape a pour but de fournir des pistes d'action concrètes et des projections.
 
-Identification des régions ou communes prioritaires pour l'installation de nouvelles infrastructures.
-
-Modélisation de scénarios : quel serait le besoin en infrastructures si le parc de VE augmentait de X% par an ?
 
 __________________________________________________________________________________________________________
 
