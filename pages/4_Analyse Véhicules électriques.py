@@ -197,5 +197,19 @@ def main():
         st.error(f"Erreur lors du chargement des données : {str(e)}")
         st.info("Vérifiez que les fichiers de données sont présents dans les répertoires spécifiés.")
 
+
 if __name__ == "__main__":
     main()
+
+import streamlit as st
+from PIL import Image        
+# Titre de l'application
+st.set_page_config(layout="wide")  # Utiliser toute la largeur
+st.title("Nombre de VE par département en 2025")
+
+# Charger l'image
+image_path = "data_prod/carte.png" 
+image = Image.open(image_path)
+
+# Afficher l'image en grand
+st.image(image, use_container_width=True)    
