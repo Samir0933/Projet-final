@@ -118,7 +118,7 @@ st.markdown("On observe ainsi les zones les mieux équipées selon leur densité
 # =======================================================
 # 4. ANALYSE TRAFIC TMJA
 # =======================================================
-st.header("Bornes et axes à fort trafic")
+st.header("Axes à fort trafic")
 st.markdown("Top 10 de la somme annuelle du TMJA par route.")
 
 sum_route = tmja_df.groupby("route")["TMJA_actualise"].sum().reset_index()
@@ -129,17 +129,19 @@ fig2 = px.bar(top_10_route, x='route', y='TMJA_actualise',
 fig2.update_layout(xaxis_tickangle=45)
 st.plotly_chart(fig2)
 
-st.markdown("Ces données permettront de comparer les zones de trafic intense avec la localisation des bornes.")
+st.markdown("Ces données permettront de montrer quelles sont les zones de trafic les plus utilisées entre 2016 et 2019.")
 
 # =======================================================
 # 5. MATRICE DE CORRÉLATION
 # =======================================================
 st.subheader("Corrélations TMJA")
-numeric_cols = ['longueur', 'TMJA_actualise', 'anneeMesureTrafic', 'depPrD']
+numeric_cols = ['TMJA_actualise', 'anneeMesureTrafic', 'depPrD']
 available_cols = [col for col in numeric_cols if col in tmja_df.columns]
 if len(available_cols) >= 2:
     correlation_matrix = tmja_df[available_cols].corr()
-    fig4 = px.imshow(correlation_matrix, text_auto=True, aspect="auto",
+     # Définition des labels personnalisés pour les axes
+    custom_labels = ["TMJA", "Année mesure trafic", "Département"]
+    fig4 = px.imshow(correlation_matrix, text_auto=True, aspect="auto",x=custom_labels, y=custom_labels,
                      color_continuous_scale='RdBu_r',
                      title="Matrice de corrélation TMJA")
     st.plotly_chart(fig4)

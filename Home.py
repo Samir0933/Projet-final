@@ -44,7 +44,7 @@ st.markdown("---")
 
 st.header("Fichiers de Données Utilisés")
 st.markdown("""
-- **BornePropre.csv **  
+- **BornesPropres_with_depart_light.csv et BornesPropresLight.csv  **  
   Liste géolocalisée des points de recharge (puissance, opérateur, date de mise en service).  
   *Base pour état des lieux, analyse spatiale et temporelle.*
 
@@ -52,11 +52,11 @@ st.markdown("""
   Nombre de véhicules électriques et hybrides rechargeables par commune.  
   *Quantification de la demande et calcul du ratio bornes/véhicules.*
 
-- **population_with_geopoint.csv **  
+- **population_with_geopoint.csv et population_densite.csv.csv **  
   Nombre d’habitants par commune avec coordonnées géographiques.  
   *Contextualisation par rapport à la population.*
 
-- **TMJA.csv **  
+- **TMJA2016_2019_Propre.csv  **  
   Trafic Moyen Journalier Annuel sur grands axes routiers.  
   *Analyse des besoins en mobilité longue distance.*
 """)
@@ -66,7 +66,7 @@ st.markdown("---")
 st.header("Environnement Technique")
 st.markdown("""
 - **Langage :** Python 3.10  
-- **Bibliothèques :** pandas, numpy, matplotlib, seaborn, plotly, geopandas  
+- **Bibliothèques :** pandas, numpy, matplotlib, seaborn, plotly, geopandas, scipy, shapely  
 - **Outils :** Dataiku, Visual Studio Code, Streamlit
 """)
 
