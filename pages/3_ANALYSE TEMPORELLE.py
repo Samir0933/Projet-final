@@ -107,16 +107,8 @@ st.markdown("""
 """)
 
 def page_3_saisonnalite():
-    # SECTION 1 - Installations de bornes filtrées
-    st.header("Saisonnalité des installations de bornes")
-    df_bornes = pd.read_csv('data_prod/BornesPropresLight.csv')
-    analyzer = VEChargingAnalyzer(df_bornes)
-    analyzer.prepare_data(annees_selection[0], annees_selection[1])
-    st.plotly_chart(analyzer.plot_saisonnalite_installations(), use_container_width=True)
-
-    st.markdown("---")
-
-    # SECTION 2 - Évolution du trafic filtré
+    
+     # SECTION 1 - Évolution du trafic filtré
     st.header("Évolution du trafic routier en France")
     if df_traffic is not None:
         df_traffic_filtered = df_traffic[
@@ -125,6 +117,17 @@ def page_3_saisonnalite():
         ]
         traffic_analyzer = TrafficAnalyzer(df_traffic_filtered)
         st.plotly_chart(traffic_analyzer.plot_evolution_trafic(), use_container_width=True)
+    
+    # SECTION 2 - Installations de bornes filtrées
+    st.header("Saisonnalité des installations de bornes")
+    df_bornes = pd.read_csv('data_prod/BornesPropresLight.csv')
+    analyzer = VEChargingAnalyzer(df_bornes)
+    analyzer.prepare_data(annees_selection[0], annees_selection[1])
+    st.plotly_chart(analyzer.plot_saisonnalite_installations(), use_container_width=True)
+
+    st.markdown("---")
+
+   
 
 if __name__ == "__main__":
     page_3_saisonnalite()
