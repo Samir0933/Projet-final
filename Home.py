@@ -54,37 +54,3 @@ st.markdown("""
 """)
 
 st.markdown("---")
-
-st.header("Environnement Technique")
-st.markdown("""
-- **Langage :** Python 3.10  
-- **Bibliothèques :** pandas, numpy, matplotlib, seaborn, plotly, geopandas, scipy, shapely  
-- **Outils :** Dataiku, Visual Studio Code, Streamlit
-""")
-
-st.markdown("---")
-
-st.header("Issue Tree")
-st.markdown("""
-**Problématique centrale :**  
-La répartition et l’évolution des infrastructures de recharge sont-elles adaptées à la croissance du parc VE, aux objectifs AFI et aux besoins territoriaux ?
-
----
-
-**I. Comprendre le niveau actuel de déploiement**  
-- Évolution des bornes et parc VE  
-- Ratio bornes / véhicules vs AFI
-
-**II. Analyse Géographique**  
-- Cohérence infrastructures / population / trafic  
-- Zones sous-équipées et clusters
-
-**III. Analyse Temporelle**  
-- Tendances, pics, retards  
-- Conformité aux objectifs LOM
-
-**IV. Recommandations**  
-- Zones prioritaires  
-- Renforcement selon trafic et prévisions  
-- Scénarios de croissance
-""")
