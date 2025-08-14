@@ -139,7 +139,9 @@ numeric_cols = ['TMJA_actualise', 'anneeMesureTrafic', 'depPrD']
 available_cols = [col for col in numeric_cols if col in tmja_df.columns]
 if len(available_cols) >= 2:
     correlation_matrix = tmja_df[available_cols].corr()
-    fig4 = px.imshow(correlation_matrix, text_auto=True, aspect="auto",
+     # Définition des labels personnalisés pour les axes
+    custom_labels = ["TMJA", "Année mesure trafic", "Département"]
+    fig4 = px.imshow(correlation_matrix, text_auto=True, aspect="auto",x=custom_labels, y=custom_labels,
                      color_continuous_scale='RdBu_r',
                      title="Matrice de corrélation TMJA")
     st.plotly_chart(fig4)
