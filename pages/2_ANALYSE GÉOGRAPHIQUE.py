@@ -166,16 +166,17 @@ try:
         lat=bornes_clean['consolidated_latitude'], lon=bornes_clean['consolidated_longitude'],
         mode='markers', marker=dict(size=5, color='#00B894'), name='Bornes'
     ))
-    tmja_sample = gdf_tmja.sample(min(1000, len(gdf_tmja)))
+    #tmja_sample = gdf_tmja.sample(min(1000, len(gdf_tmja)))
     fig5.add_trace(go.Scattermapbox(
-        lat=tmja_sample['lat'], lon=tmja_sample['lon'],
-        mode='markers', marker=dict(size=8, color='#0984E3'), name='Axes routiers'
-    ))
+    lat=gdf_tmja['lat'], lon=gdf_tmja['lon'],
+    mode='markers', marker=dict(size=6, color='#0984E3'), name='Axes routiers'
+))
     fig5.update_layout(mapbox=dict(style="open-street-map", center=dict(lat=46.5, lon=2.5), zoom=5),
                        height=600)
     st.plotly_chart(fig5)
 except Exception as e:
     st.error(f"Erreur carte : {e}")
+
 
 # =======================================================
 # 7. CORRÉLATION TMJA vs BORNES

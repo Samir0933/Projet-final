@@ -11,3 +11,14 @@ image = Image.open(image_path)
 
 # Afficher l'image en grand
 st.image(image, use_container_width=True)
+
+# Titre de l'application
+st.set_page_config(layout="wide")  # Utiliser toute la largeur
+st.title("Héritage TMJA")
+
+# Charger l'image
+image_path = "data_prod/Héritage_TMJA_Dataiku.png" 
+image = Image.open(image_path)
+
+# Afficher l'image en grand
+st.image(image, use_container_width=True)
